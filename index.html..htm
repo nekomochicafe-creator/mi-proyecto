@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🐱 Neko Mochi Café — Café & Gatitos Kawaii</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&family=Pacifico&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --rosa: #FFD1DC;
+            --rosa-oscuro: #FFB7C5;
+            --rosa-fuerte: #FF9EB5;
+            --celeste: #B5E4F0;
+            --celeste-oscuro: #8DD4E8;
+            --crema: #FFF8E7;
+            --crema-oscura: #FFF0D4;
+            --lila: #E6E6FA;
+            --lila-oscuro: #D4D4F7;
+            --menta: #B5EAD7;
+            --menta-oscuro: #8FE0C5;
+            --blanco: #FFFFFF;
+            --texto: #6B5B73;
+            --texto-suave: #9B8BA3;
+            --sombra: rgba(107, 91, 115, 0.12);
+            --sombra-fuerte: rgba(107, 91, 115, 0.2);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: var(--crema);
+            color: var(--texto);
+            overflow-x: hidden;
+        }
+
+        /* ── Huellitas de fondo ── */
+        .paw-bg {
+            position: fixed; inset: 0; pointer-events: none; z-index: 0;
+            opacity: .06;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='90' height='90' viewBox='0 0 100 100'%3E%3Cpath d='M30 55c-8 0-14 6-14 14s6 14 14 14 14-6 14-14-6-14-14-14zm40 0c-8 0-14 6-14 14s6 14 14 14 14-6 14-14-6-14-14-14zm-20 5c-6 0-11 5-11 11s5 11 11 11 11-5 11-11-5-11-11-11zm-30-20c-5 0-9 4-9 9s4 9 9 9 9-4 9-9-4-9-9-9zm60 0c-5 0-9 4-9 9s4 9 9 9 9-4 9-9-4-9-9-9zm-30-10c-4 0-7 3-7 7s3 7 7 7 7-3 7-7-3-7-7-7z' fill='%23FF9EB5'/%3E%3C/svg%3E");
+        }
+
+        /* ── Navegación ── */
+        nav {
+            position: fixed; top: 0; width: 100%; z-index: 1000;
+            background: rgba(255,248,231,.95);
+            backdrop-filter: blur(14px);
+            padding: 12px 30px;
+            border-radius: 0 0 35px 35px;
+            box-shadow: 0 4px 25px var(--sombra);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .logo { font-family: 'Pacifico',cursive; font-size: 1.7rem; color: var(--rosa-fuerte); text-shadow: 2px 2px 0 var(--lila); transition: .3s; cursor: pointer; }
+        .logo:hover { transform: scale(1.05) rotate(-2deg); }
+        .nav-links { display: flex; gap: 8px; list-style: none; align-items: center; }
+        .nav-links a { text-decoration: none; color: var(--texto); font-weight: 700; font-size: .9rem; padding: 8px 16px; border-radius: 20px; transition: .3s; }
+        .nav-links a:hover { background: var(--rosa); color: #fff; transform: translateY(-3px); box-shadow: 0 6px 15px rgba(255,158,181,.35); }
+        .cart-btn { position: relative; background: var(--rosa); color: #fff; border: none; padding: 10px 18px; border-radius: 25px; font-family: 'Quicksand'; font-weight: 700; cursor: pointer; transition: .3s; font-size: .9rem; }
+        .cart-btn:hover { transform: scale(1.08); box-shadow: 0 8px 20px rgba(255,158,181,.4); }
+        .cart-count { position: absolute; top: -8px; right: -8px; background: var(--celeste-oscuro); color: #fff; width: 22px; height: 22px; border-radius: 50%; font-size: .75rem; display: flex; align-items: center; justify-content: center; }
+
+        /* ── Hero ── */
+        .hero {
+            min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;
+            padding: 140px 20px 80px;
+            background: linear-gradient(135deg, var(--rosa) 0%, var(--lila) 40%, var(--celeste) 100%);
+            border-radius: 0 0 70px 70px; position: relative; overflow: hidden;
+        }
+        .hero::before { content: ''; position: absolute; width: 350px; height: 350px; background: rgba(255,255,255,.18); border-radius: 50%; top: -120px; right: -60px; animation: float 9s ease-in-out infinite; }
+        .hero::after { content: ''; position: absolute; width: 250px; height: 250px; background: rgba(255,255,255,.12); border-radius: 50%; bottom: -60px; left: -60px; animation: float 7s ease-in-out infinite reverse; }
+        @keyframes float { 0%,100%{transform:translateY(0) rotate(0)} 50%{transform:translateY(-35px) rotate(12deg)} }
+        .hero-cat { font-size: 7rem; margin-bottom: 10px; animation: bounce 2.5s ease infinite; filter: drop-shadow(0 12px 25px rgba(0,0,0,.1)); position: relative; z-index: 1; }
+        @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-22px)} }
+        .hero h1 { font-family: 'Pacifico',cursive; font-size: 4.5rem; color: #fff; text-shadow: 4px 4px 0 rgba(107,91,115,.15); position: relative; z-index: 1; animation: fadeInDown 1s ease; }
+        .hero p { font-size: 1.3rem; color: #fff; font-weight: 500; margin: 15px 0 35px; text-shadow: 1px 1px 4px rgba(0,0,0,.08); position: relative; z-index: 1; animation: fadeInUp 1s ease .2s both; }
+        @keyframes fadeInDown { from{opacity:0;transform:translateY(-40px)} to{opacity:1;transform:translateY(0)} }
+        @keyframes fadeInUp { from{opacity:0;transform:translateY(40px)} to{opacity:1;transform:translateY(0)} }
+        .btn { display: inline-block; padding: 16px 45px; border-radius: 50px; font-size: 1.1rem; font-weight: 700; text-decoration: none; border: none; cursor: pointer; transition: .4s cubic-bezier(.175,.885,.32,1.275); position: relative; z-index: 1; }
+        .btn-main { background: #fff; color: var(--rosa-fuerte); box-shadow: 0 10px 30px rgba(255,255,255,.3); }
+        .btn-main:hover { transform: translateY(-5px) scale(1.05); box-shadow: 0 18px 40px rgba(255,255,255,.5); }
+
+        /* ── Secciones ── */
+        section { padding: 90px 30px; position: relative; z-index: 1; }
+        .section-box { background: #fff; border-radius: 60px; margin: 30px auto; max-width: 1200px; box-shadow: 0 12px 45px var(--sombra); }
+        .section-title { font-family: 'Pacifico',cursive; font-size: 2.8rem; text-align: center; margin-bottom: 50px; color: var(--rosa-fuerte); position: relative; }
+        .section-title::after { content: '🐾'; display: block; font-size: 1.4rem; margin-top: 8px; animation: wiggle 2.2s ease infinite; }
+        @keyframes wiggle { 0%,100%{transform:rotate(-6deg)} 50%{transform:rotate(6deg)} }
+
+        /* ── Ofertas del día ── */
+        .offers { background: linear-gradient(135deg, var(--menta), var(--celeste)); border-radius: 50px; margin: 30px auto; max-width: 1200px; padding: 50px 40px; position: relative; overflow: hidden; }
+        .offers::before { content: '✨'; position: absolute; font-size: 8rem; opacity: .08; top: -20px; right: 20px; }
+        .offers h2 { font-family: 'Pacifico',cursive; color: #fff; text-align: center; font-size: 2.4rem; margin-bottom: 30px; text-shadow: 2px 2px 0 rgba(0,0,0,.08); }
+        .offers-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px; max-width: 1000px; margin: 0 auto; }
+        .offer-card { background: rgba(255,255,255,.92); border-radius: 35px; padding: 30px; text-align: center; transition: .4s; backdrop-filter: blur(8px); }
+        .offer-card:hover { transform: translateY(-10px) scale(1.03); box-shadow: 0 20px 50px rgba(0,0,0,.1); }
+        .offer-card .offer-emoji { font-size: 3.5rem; display: block; margin-bottom: 12px; transition: .3s; }
+        .offer-card:hover .offer-emoji { transform: scale(1.2) rotate(-8deg); }
+        .offer-card h4 { font-family: 'Pacifico',cursive; color: var(--rosa-fuerte); font-size: 1.3rem; margin-bottom: 8px; }
+        .offer-card p { font-size: .95rem; color: var(--texto-suave); }
+        .offer-badge { display: inline-block; background: var(--rosa-fuerte); color: #fff; padding: 5px 18px; border-radius: 20px; font-size: .85rem; font-weight: 700; margin-top: 10px; }
+
+        /* ── Menú Tabs ── */
+        .menu-tabs { display: flex; justify-content: center; gap: 15px; margin-bottom: 40px; flex-wrap: wrap; }
+        .menu-tab { padding: 12px 30px; border-radius: 30px; border: none; background: var(--lila); color: var(--texto); font-family: 'Quicksand'; font-weight: 700; font-size: 1rem; cursor: pointer; transition: .3s; }
+        .menu-tab:hover { background: var(--rosa); color: #fff; transform: translateY(-3px); }
+        .menu-tab.active { background: var(--rosa-fuerte); color: #fff; box-shadow: 0 8px 25px rgba(255,158,181,.35); }
+
+        .menu-panel { display: none; animation: fadeIn .4s ease; }
+        .menu-panel.active { display: block; }
+        @keyframes fadeIn { from{opacity:0;transform:translateY(15px)} to{opacity:1;transform:translateY(0)} }
+
+        .menu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 30px; max-width: 1200px; margin: 0 auto; }
+
+        .menu-card {
+            background: #fff; border-radius: 40px; overflow: hidden;
+            box-shadow: 0 10px 35px var(--sombra);
+            transition: .4s cubic-bezier(.175,.885,.32,1.275);
+            display: flex; flex-direction: column;
+        }
+        .menu-card:hover { transform: translateY(-12px) scale(1.02); box-shadow: 0 22px 55px var(--sombra-fuerte); }
+        .menu-card .card-img {
+            height: 180px; display: flex; align-items: center; justify-content: center;
+            font-size: 5rem; position: relative;
+        }
+        .menu-card:nth-child(6n+1) .card-img { background: linear-gradient(135deg, var(--rosa), var(--lila)); }
+        .menu-card:nth-child(6n+2) .card-img { background: linear-gradient(135deg, var(--celeste), var(--menta)); }
+        .menu-card:nth-child(6n+3) .card-img { background: linear-gradient(135deg, var(--lila), var(--rosa)); }
+        .menu-card:nth-child(6n+4) .card-img { background: linear-gradient(135deg, var(--menta), var(--celeste)); }
+        .menu-card:nth-child(6n+5) .card-img { background: linear-gradient(135deg, var(--rosa), var(--crema)); }
+        .menu-card:nth-child(6n+6) .card-img { background: linear-gradient(135deg, var(--celeste), var(--lila)); }
+        .menu-card .card-img span { filter: drop-shadow(0 6px 12px rgba(0,0,0,.1)); transition: .3s; }
+        .menu-card:hover .card-img span { transform: scale(1.15) rotate(-8deg); }
+        .card-body { padding: 25px; flex: 1; display: flex; flex-direction: column; }
+        .card-body h3 { font-family: 'Pacifico',cursive; font-size: 1.3rem; color: var(--rosa-fuerte); margin-bottom: 8px; }
+        .card-body .ingredients { font-size: .88rem; color: var(--texto-suave); line-height: 1.6; margin-bottom: 15px; flex: 1; }
+        .card-footer { display: flex; justify-content: space-between; align-items: center; margin-top: auto; }
+        .price { font-size: 1.3rem; font-weight: 700; color: var(--menta-oscuro); background: var(--crema); padding: 8px 22px; border-radius: 20px; }
+        .add-btn { background: var(--rosa-fuerte); color: #fff; border: none; padding: 10px 22px; border-radius: 25px; font-family: 'Quicksand'; font-weight: 700; cursor: pointer; transition: .3s; font-size: .9rem; }
+        .add-btn:hover { background: var(--rosa-oscuro); transform: scale(1.1); box-shadow: 0 8px 20px rgba(255,158,181,.4); }
+
+        /* ── Carrito ── */
+        .cart-overlay { position: fixed; inset: 0; background: rgba(107,91,115,.35); z-index: 2000; opacity: 0; pointer-events: none; transition: .3s; backdrop-filter: blur(4px); }
+        .cart-overlay.show { opacity: 1; pointer-events: all; }
+        .cart-sidebar { position: fixed; top: 0; right: 0; width: 420px; max-width: 90vw; height: 100%; background: #fff; z-index: 2001; border-radius: 40px 0 0 40px; box-shadow: -10px 0 40px var(--sombra); transform: translateX(110%); transition: .4s cubic-bezier(.175,.885,.32,1.275); display: flex; flex-direction: column; }
+        .cart-sidebar.show { transform: translateX(0); }
+        .cart-header { padding: 30px; border-bottom: 2px dashed var(--lila); display: flex; justify-content: space-between; align-items: center; }
+        .cart-header h2 { font-family: 'Pacifico',cursive; color: var(--rosa-fuerte); font-size: 1.8rem; }
+        .close-cart { background: none; border: none; font-size: 1.8rem; cursor: pointer; color: var(--texto-suave); transition: .3s; }
+        .close-cart:hover { transform: rotate(90deg); color: var(--rosa-fuerte); }
+        .cart-items { flex: 1; overflow-y: auto; padding: 20px 30px; }
+        .cart-item { display: flex; gap: 15px; align-items: center; padding: 15px; background: var(--crema); border-radius: 25px; margin-bottom: 12px; transition: .3s; }
+        .cart-item:hover { background: var(--lila); }
+        .cart-item .ci-emoji { font-size: 2.2rem; }
+        .cart-item .ci-info { flex: 1; }
+        .cart-item .ci-info h4 { font-size: 1rem; color: var(--texto); margin-bottom: 4px; }
+        .cart-item .ci-info span { font-size: .9rem; color: var(--rosa-fuerte); font-weight: 700; }
+        .ci-qty { display: flex; align-items: center; gap: 8px; }
+        .ci-qty button { width: 28px; height: 28px; border-radius: 50%; border: none; background: var(--rosa); color: #fff; font-weight: 700; cursor: pointer; transition: .2s; }
+        .ci-qty button:hover { background: var(--rosa-fuerte); transform: scale(1.15); }
+        .ci-qty span { font-weight: 700; min-width: 20px; text-align: center; }
+        .remove-item { background: none; border: none; font-size: 1.2rem; cursor: pointer; color: var(--texto-suave); transition: .2s; }
+        .remove-item:hover { color: #ff6b6b; transform: scale(1.2); }
+        .cart-empty { text-align: center; padding: 60px 20px; color: var(--texto-suave); font-size: 1.1rem; }
+        .cart-empty .big-emoji { font-size: 4rem; display: block; margin-bottom: 15px; }
+        .cart-footer { padding: 25px 30px; border-top: 2px dashed var(--lila); }
+        .cart-total { display: flex; justify-content: space-between; font-size: 1.3rem; font-weight: 700; margin-bottom: 20px; color: var(--texto); }
+        .cart-total span:last-child { color: var(--rosa-fuerte); }
+        .checkout-btn { width: 100%; padding: 16px; border-radius: 30px; border: none; background: linear-gradient(135deg, var(--rosa-fuerte), var(--lila-oscuro)); color: #fff; font-family: 'Quicksand'; font-weight: 700; font-size: 1.1rem; cursor: pointer; transition: .3s; margin-bottom: 12px; }
+        .checkout-btn:hover { transform: scale(1.03); box-shadow: 0 10px 30px rgba(255,158,181,.4); }
+        .whatsapp-btn { width: 100%; padding: 14px; border-radius: 30px; border: 2px solid var(--menta-oscuro); background: #fff; color: var(--menta-oscuro); font-family: 'Quicksand'; font-weight: 700; font-size: 1rem; cursor: pointer; transition: .3s; display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; }
+        .whatsapp-btn:hover { background: var(--menta); color: #fff; transform: scale(1.03); }
+
+        /* ── Rating / Reseñas ── */
+        .rating-box { max-width: 700px; margin: 0 auto; text-align: center; background: linear-gradient(135deg, var(--lila), var(--rosa)); border-radius: 50px; padding: 50px 40px; color: #fff; position: relative; overflow: hidden; }
+        .rating-box::before { content: '😻'; position: absolute; font-size: 10rem; opacity: .08; top: -30px; left: -20px; }
+        .rating-box h3 { font-family: 'Pacifico',cursive; font-size: 2rem; margin-bottom: 20px; }
+        .stars { font-size: 2.5rem; margin-bottom: 15px; letter-spacing: 5px; }
+        .rating-score { font-size: 3.5rem; font-weight: 700; margin-bottom: 10px; }
+        .rating-count { font-size: 1.1rem; opacity: .9; }
+        .rating-input { margin-top: 25px; display: flex; flex-direction: column; gap: 12px; align-items: center; }
+        .rating-input textarea { width: 100%; max-width: 500px; padding: 15px 20px; border-radius: 25px; border: none; font-family: 'Quicksand'; font-size: 1rem; resize: none; outline: none; box-shadow: 0 4px 15px rgba(0,0,0,.08); }
+        .star-picker { display: flex; gap: 8px; font-size: 2rem; cursor: pointer; }
+        .star-picker span { transition: .2s; opacity: .4; }
+        .star-picker span:hover, .star-picker span.active { opacity: 1; transform: scale(1.2); }
+        .submit-rating { padding: 12px 40px; border-radius: 30px; border: none; background: #fff; color: var(--rosa-fuerte); font-family: 'Quicksand'; font-weight: 700; font-size: 1rem; cursor: pointer; transition: .3s; }
+        .submit-rating:hover { transform: scale(1.08); box-shadow: 0 8px 25px rgba(0,0,0,.15); }
+
+        /* ── Contacto ── */
+        .contact-grid { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+        .info-card { background: #fff; border-radius: 40px; padding: 40px; box-shadow: 0 10px 35px var(--sombra); transition: .4s; }
+        .info-card:hover { transform: translateY(-6px); box-shadow: 0 18px 45px var(--sombra-fuerte); }
+        .info-card h3 { font-family: 'Pacifico',cursive; color: var(--rosa-fuerte); font-size: 1.6rem; margin-bottom: 25px; display: flex; align-items: center; gap: 10px; }
+        .info-card p, .info-card li { font-size: 1.05rem; line-height: 2.2; color: var(--texto); }
+        .info-card ul { list-style: none; }
+        .info-card li::before { content: '🐾 '; }
+        .map-container { border-radius: 30px; overflow: hidden; height: 280px; margin-top: 20px; border: 4px solid var(--lila); }
+        .map-container iframe { width: 100%; height: 100%; border: none; }
+
+        .delivery-btns { display: flex; gap: 15px; margin-top: 20px; flex-wrap: wrap; }
+        .delivery-btns a { flex: 1; min-width: 140px; padding: 14px 20px; border-radius: 30px; text-decoration: none; font-weight: 700; text-align: center; transition: .3s; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .btn-wa { background: #25D366; color: #fff; box-shadow: 0 8px 25px rgba(37,211,102,.3); }
+        .btn-wa:hover { transform: translateY(-4px) scale(1.03); box-shadow: 0 14px 35px rgba(37,211,102,.4); }
+        .btn-rappi { background: #FF5E3A; color: #fff; box-shadow: 0 8px 25px rgba(255,94,58,.3); }
+        .btn-rappi:hover { transform: translateY(-4px) scale(1.03); box-shadow: 0 14px 35px rgba(255,94,58,.4); }
+
+        .social-row { display: flex; gap: 15px; margin-top: 20px; }
+        .social-row a { width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; text-decoration: none; transition: .3s cubic-bezier(.175,.885,.32,1.275); box-shadow: 0 5px 15px var(--sombra); }
+        .social-row a:hover { transform: translateY(-8px) scale(1.15); }
+        .ig { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); color: #fff; }
+        .fb { background: #1877F2; color: #fff; }
+        .tk { background: #000; color: #fff; }
+
+        /* ── Footer ── */
+        footer {
+            background: linear-gradient(135deg, var(--lila), var(--rosa)); border-radius: 60px 60px 0 0;
+            padding: 60px 30px 30px; text-align: center; position: relative; z-index: 1;
+        }
+        .footer-cats { font-size: 3rem; margin-bottom: 20px; animation: bounce 3.5s ease infinite; }
+        footer p { color: #fff; font-size: 1.1rem; font-weight: 500; text-shadow: 1px 1px 3px rgba(0,0,0,.08); }
+
+        /* ── Scrollbar ── */
+        ::-webkit-scrollbar { width: 12px; }
+        ::-webkit-scrollbar-track { background: var(--crema); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: linear-gradient(var(--rosa), var(--lila)); border-radius: 10px; }
+
+        /* ── Responsive ── */
+        @media (max-width: 900px) {
+            .contact-grid { grid-template-columns: 1fr; }
+            .hero h1 { font-size: 3rem; }
+            nav { padding: 10px 15px; }
+            .nav-links a { padding: 6px 12px; font-size: .8rem; }
+        }
+        @media (max-width: 600px) {
+            .hero h1 { font-size: 2.3rem; }
+            .hero p { font-size: 1rem; }
+            .section-title { font-size: 2rem; }
+            .menu-grid { grid-template-columns: 1fr; }
+            .offers-grid { grid-template-columns: 1fr; }
+        }
+
+        /* ── Toast notification ── */
+        .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--rosa-fuerte); color: #fff; padding: 14px 35px; border-radius: 30px; font-weight: 700; box-shadow: 0 10px 35px rgba(255,158,181,.4); z-index: 3000; transition: .4s cubic-bezier(.175,.885,.32,1.275); opacity: 0; pointer-events: none; }
+        .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+    </style>
+</head>
+<body>
+
+    <div class="paw-bg"></div>
+
+    <!-- Navegación -->
+    <nav>
+        <div class="logo">🐱 Neko Mochi Café</div>
+        <ul class="nav-links">
+            <li><a href="#inicio">Inicio</a></li>
+            <li><a href="#ofertas">Ofertas</a></li>
+            <li><a href="#menu">Menú</a></li>
+            <li><a href="#resenas">Reseñas</a></li>
+            <li><a href="#contacto">Contacto</a></li>
+            <li><button class="cart-btn" onclick="toggleCart()">🛒 Carrito <span class="cart-count" id="cartCount">0</span></button></li>
+        </ul>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero" id="inicio">
+        <div class="hero-cat">😺</div>
+        <h1>Neko Mochi Café</h1>
+        <p>El lugar más dulce donde los gatitos y el café se abrazan 🍡☕<br>¡Ordena a domicilio y lleva la magia kawaii a tu casa!</p>
+        <a href="#menu" class="btn btn-main">Ver Menú Completo 🐾</a>
+    </section>
+
+    <!-- Ofertas del Día -->
+    <section id="ofertas">
+        <div class="offers">
+            <h2>✨ Ofertas del Día ✨</h2>
+            <div class="offers-grid">
+                <div class="offer-card">
+                    <span class="offer-emoji">
+                        <img src="https://iswari.s3.eu-west-3.amazonaws.com/blog/sc4jfi-.jpg" width="40%">
+                    </span>
+                    <h4>Combo Neko</h4>
+                    <p>Matcha Latte + Mochi de tu elección</p>
+                    <span class="offer-badge">$7.500</span>
+                </div>
+                <div class="offer-card">
+                    <span class="offer-emoji">
+                        <img src="https://www.kioskodedulcinea.com/wp-content/uploads/2019/08/cupcakes-de-animales-6-kiosko-de-dulcinea-min.jpg" width="40%">
+                    </span>
+                    <h4>Dulce Pareja</h4>
+                    <p>2 Cupcakes de gatito + 2 Bubble Teas</p>
+                    <span class="offer-badge">$10.000</span>
+                </div>
+                <div class="offer-card">
+                    <span class="offer-emoji">
+                        <img src="https://sw6.elbenwald.de/media/26/95/b4/1729032289/E1085105_5.jpg" width="40%">
+                    </span>
+                    <h4>Desayuno Kawaii</h4>
+                    <p>Waffles en forma de gato + Chocolate Caliente</p>
+                    <span class="offer-badge">$9.000</span>
+                </div>
+                <div class="offer-card">
+                    <span class="offer-emoji">
+                        <img src="https://i.pinimg.com/originals/8f/10/17/8f1017ee91ad1d0f38c94c53556c7352.jpg"width=40%> 
+                    
+                    </span>
+                    <h4>Festejo Felino</h4>
+                    <p>Cheesecake Sakura + Gelatina 3D para 2</p>
+                    <span class="offer-badge">$12.000</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Menú -->
+    <section class="section-box" id="menu">
+        <h2 class="section-title">Nuestro Menú Kawaii</h2>
+        <div class="menu-tabs">
+            <button class="menu-tab active" onclick="showTab('postres')">🍰 Postres</button>
+            <button class="menu-tab" onclick="showTab('bebidas')">🧋 Bebidas</button>
+            <button class="menu-tab" onclick="showTab('snacks')">🥐 Snacks</button>
+        </div>
+
+        <!-- POSTRES -->
+        <div class="menu-panel active" id="tab-postres">
+            <div class="menu-grid">
+                <div class="menu-card">
+                    <div class="card-img"><span>
+                    </span></div>
+                    <div class="card-body">
+                        <h3>Gelatina Gatito de Fresa</h3>
+                        <p class="ingredients">Gelatina de fresa natural, leche condensada, ojos de chocolate y orejitas de almendra.</p>
+                        <div class="card-footer"><span class="price">$4.500</span><button class="add-btn" onclick="addToCart('Gelatina Gatito de fresa','4500','<img https://p16-common-sign.tiktokcdn-us.com/tos-alisg-p-0037/oEfoNWRVEVDv9fMEYkFAZIWFBuI3QgBi5DCcQA~tplv-tiktokx-origin.image?dr=9636&x-expires=1785920400&x-signature=eVHAhNImtTCwtkkqafrBGbLv1HY%3D&t=4d5b0474&ps=13740610&shp=81f88b70&shcp=55bbe6a9&idc=useast5')"width= 40%>Agregar</button></div>
+                    </div>
+                </div>
+                <div class="menu-card">
+                    <div class="card-img"><span>🥭</span></div>
+                    <div class="card-body">
+                        <h3>Gelatina Gatito de Maracuyá</h3>
+                        <p class="ingredients">Gelatina de maracuyá, pulpa natural, crema de leche, chocolate para decorar.</p>
+                        <div class="card-footer"><span class="price">$4.500</span><button class="add-btn" onclick="addToCart('Gelatina Gatito de Maracuyá','4500','> <img https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSSRXa4amZHuW0H9hfpEXyAHO0MaXl5guWC_JPevDxsDgzJdWdjA6isSUE&s=10')"width=40%>Agregar</button></div>
+                    </div>
+                </div>
+                <div class="menu-card">
+                    <div class="card-img"><span>🍮</span></div>
+                    <div class="card-body">
+                        <h3>Panna Cotta de Gatito</h3>
+                        <p class="ingredients">Crema de leche, vainilla bourbon, coulis de frutos rojos, almendras laminadas.</p>
+                        <div class="card-footer"><span class="price">$5.500</span><button class="add-btn" onclick="addToCart('Panna Cotta de Gatito','5500','🍮')">Agregar</button></div>
+                    </div>
+                </div>
+                <div class="menu-card">
+                    <div class="card-img"><span>🌸</span></div>
+                    <div class="card-body">
+                        <h3>Cheesecake Sakura</h3>
+                        <p class="ingredients">Queso crema, pétalos de cerezo, base de galleta, coulis de fresa, flor comestible.</p>
+                        <div class="card-footer"><span class="price">$6.000</span><button class="add-btn" onclick="addToCart('Cheesecake Sakura','6000','🌸')">Agregar</button></div>
+                    </div>
+                </div>
+                <div class="menu-card">
+                    <div class="card-img"><span>🍫</span></div>
+                    <div class="card-body">
+                        <h3>Tiramisú Neko</h3>
+                        <p class="ingredients">Mascarpone, café espresso, cacao en polvo, bizcocho savoiardi, crema batida.</p>
+                        <div class="card-footer"><span class="price">$5.500</span><button class="add-btn" onclick="addToCart('Tiramisú Neko','5500','🍫')">Agregar</button></div>
+                    </div>
+                </div>
+                <div class="menu-card">
+                    <div class="card-img"><span>🍮</span></div>
+                    <div class="card-body">
+                        <h3>Flan de Caramelo con Huellitas</h3>
+                        <p class="ingredients">Huevo, leche, vainilla, caramelo casero, decoración de huellitas de chocolate.</p>
+                        <div class="card-footer"><span class="price">$4.000</span><button class="add-btn" onclick="addToCart('Flan de Caramelo con Huellitas','4000','🍮')">Agregar</button></div>
+                    </div>
+                </div>
+                <div class="menu-card">
+                    <div class="card-img"><span>🧁</span></div>
+                    <div class="card-body">
+                        <h3>Mini Cupcakes de Gatitos</h3>
+                        <p class="ingredients">Bizcocho de vainilla, buttercream, orejas de fondant, ojos de azúcar. X6 unidades.</p>
+                        <div class="card-footer"><span class="price">$6.500</span><button class="add-btn" onclick="addToCart('Mini Cupcakes de Gatitos','6500','🧁')">Agregar</button></div>
+                    </div>
+                </div>
+                <div class="menu-card">
+                    <div class="card-img"><span>🍡</span></div>
+                    <div class="card-body">
+                        <h3>Mochis Rellenos de Helado</h3>
+                        <p class="ingredients">Masa de arroz glutinoso, helado de vainilla, matcha y fresa, azúcar glass.</p>
+                        <div class="card-footer"><span class="price">$5.000</span><button class="add-btn" onclick="addToCart('Mochis Rellenos de Helado','5000','🍡')">Agregar</button></div>
+                    </div>
+                </div>
+                <div class="menu-card">
+                    <div class="card-img"><span>🐱</span></div>
+                    <div class="card-body">
+                        <h3>Gelatina 3D Transparente con Gatito Flotante</h3>
+                        <p class="ingredients">Gelatina clara artística, flor comestible 3D, gatito de leche condensada, frutas.</p>
+                        <div class="card-footer"><span class="price">$8.000</span><button class="add-btn" onclick="addToCart('Gelatina 3D Transparente','8000','🐱')">Agregar</button></div>
+                    </div>
+                </div>
+                <div class="menu-card">
+                    <div class="card-img"><span>🌈</span></div>
+                    <div class="card-body">
+                        <h3>Parfait Arcoíris</h3>
+                        <p class="ingredients">Yogur griego, granola casera, frutas de colores, miel, crema batida, confeti.</p>
+                        <div class="card-footer"><span class="price">$6.000</span><button class="add-btn" onclick="addToCart('Parfait Arcoíris','6000','🌈')">Agregar</button></div>
+                    </div>
+                </div>
+                <div class="menu-card">
+                    <div class="card-img"><span>🍦</span></div>
+                    <div class="card-body">
+                        <h3>Sundae de Algodón</h3>
+                        <p class="ingredients">Helado de vainilla, algodón de azúcar rosa, sprinkles, sirope de fresa, galleta.</p>
+                        <div class="card-footer"><span class="price">$5.500</span><button class="add-btn" onclick="addToCart('Sundae de Algodón','5500','🍦')">Agregar</button></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- BEBIDAS -->
+        <div class="menu-panel" id="tab-bebidas">
+            <div class="menu-grid">
+                <div class="menu-card">
+                    <div class="card-img"><span>🧋</span></div>
+                    <div class="card-body">
+                        <h3>Bubble Tea Rosa Sakura</h3>
+                        <p class="ingredients">Té negro, leche, perlas de tapioca, jarabe de sakura, pétalos comestibles.</p>
+                        <div class="card-footer"><span class="price">$5.000</span><button class="add-btn" onclick="addToCart('Bubble Tea Rosa Sakura','5000','🧋')">Agregar</button></div>
+                    </div>
+                </div>
+                <div class="menu-card">
+                    <div class="card-img"><span>🍵</span></div>
+                    <div class="card-body">
+                        <h3>Matcha Latte Neko</h3>
+                        <p class="ingredients">Matcha ceremonial, leche vaporizada, vainilla, espuma de leche arte latte.</p>
+                        <div class="card-footer"><span class="price">$5.500</span><button class="add-btn" onclick="addToCart('Matcha Latte Neko','5500','🍵')">Agregar</button></div>
+                    </div>
+                </div>
+                <div class="menu-card">
+                    <div class="card-img"><span>🍫</span></div>
+                    <div class="card-body">
+                        <h3>Chocolate Caliente Gatuno</h3>
+                        <p class="ingredients">Chocolate belga, leche entera, malvaviscos en forma de gatito, cacao espolvoreado.</p>
+                        <div class="card-footer"><span class="price">$5.000</span><button class="add-btn" onclick="addToCart('Chocolate Caliente Gatuno','5000','🍫')">Agregar</button></div>
+                    </div>
+                </div>
+                <div class="menu-card">
+                    <div class="card-img"><span>🦄</span></div>
+                    <div class="card-body">
+                        <h3>Frappé Unicorn Cat</h3>
+                        <p class="ingredients">Frappé de vainilla, crema batida, sirope de colores, sprinkles, popote arcoíris.</p>
+                        <div class="card-footer"><span class="price">$6.000</span><button class="add-btn" onclick="addToCart('Frappé Unicorn Cat','6000','🦄')">Agregar</button></div>
+                    </div>
+                </div>
+                <div class="menu-card">
+                    <div class="card-img"><span>💙</span></div>
+                    <div class="card-body">
+                        <h3>Limonada Azul Kawaii</h3>
+                        <p class="ingredients">Limón fresco, butterfly pea flower, azúcar de caña, hielo, rodaja de limón.</p>
+                        <div class="card-footer"><span class="price">$4.500</span><button class="add-btn" onclick="addToCart('Limonada Azul Kawaii','4500','💙')">Agregar</button></div>
+                    </div>
+                </div>
+                <div class="menu-card">
+                    <div class="card-img"><span>🍑</span></div>
+                    <div class="card-body">
+                        <h3>Té de Melocotón Japonés</h3>
+                        <p class="ingredients">Té verde japonés, melocotón natural, miel, hielo, rodaja de melocotón fresco.</p>
+                        <div class="card-footer"><span class="price">$4.500</span><button class="add-btn" onclick="addToCart('Té de Melocotón Japonés','4500','🍑')">Agregar</button></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SNACKS -->
+        <div class="menu-panel" id="tab-snacks">
+            <div class="menu-grid">
+                <div class="menu-card">
+                    <div class="card-img"><span>🍞</span></div>
+                    <div class="card-body">
+                        <h3>Toast de Gatito con Nutella</h3>
+                        <p class="ingredients">Pan brioche, Nutella, plátano, ojos de chocolate, orejas de fresa.</p>
+                        <div class="card-footer"><span class="price">$5.000</span><button class="add-btn" onclick="addToCart('Toast de Gatito con Nutella','5000','🍞')">Agregar</button></div>
+                    </div>
+                </div>
+                <div class="menu-card">
+                    <div class="card-img"><span>🥪</span></div>
+                    <div class="card-body">
+                        <h3>Sandwich Kawaii</h3>
+                        <p class="ingredients">Pan de miga, jamón, queso, lechuga, tomate, decoración de gatito con mayonesa.</p>
+                        <div class="card-footer"><span class="price">$5.500</span><button class="add-btn" onclick="addToCart('Sandwich Kawaii','5500','🥪')">Agregar</button></div>
+                    </div>
+                </div>
+                <div class="menu-card">
+                    <div class="card-img"><span>🥞</span></div>
+                    <div class="card-body">
+                        <h3>Dorayakis Rellenos</h3>
+                        <p class="ingredients">Panqueque japonés, pasta de azuki, crema de matcha, miel, azúcar glass.</p>
+                        <div class="card-footer"><span class="price">$4.500</span><button class="add-btn" onclick="addToCart('Dorayakis Rellenos','4500','🥞')">Agregar</button></div>
+                    </div>
+                </div>
+                <div class="menu-card">
+                    <div class="card-img"><span>🧇</span></div>
+                    <div class="card-body">
+                        <h3>Waffles en Forma de Gato</h3>
+                        <p class="ingredients">Masa de waffle belga, helado, frutas, sirope de maple, crema batida, confeti.</p>
+                        <div class="card-footer"><span class="price">$6.500</span><button class="add-btn" onclick="addToCart('Waffles en Forma de Gato','6500','🧇')">Agregar</button></div>
+                    </div>
+                </div>
+                <div class="menu-card">
+                    <div class="card-img"><span>🥐</span></div>
+                    <div class="card-body">
+                        <h3>Croissants Decorados</h3>
+                        <p class="ingredients">Masa hojaldre francesa, mantequilla, chocolate blanco, decoración de gatito.</p>
+                        <div class="card-footer"><span class="price">$4.000</span><button class="add-btn" onclick="addToCart('Croissants Decorados','4000','🥐')">Agregar</button></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Rating / Reseñas -->
+    <section id="resenas">
+        <div class="rating-box">
+            <h3>😻 ¿Qué dicen nuestros clientes?</h3>
+            <div class="stars" id="displayStars">⭐⭐⭐⭐⭐</div>
+            <div class="rating-score" id="ratingScore">4.9</div>
+            <div class="rating-count" id="ratingCount"> basado en 128 reseñas kawaii</div>
+            <div class="rating-input">
+                <div class="star-picker" id="starPicker">
+                    <span onclick="setRating(1)">⭐</span>
+                    <span onclick="setRating(2)">⭐</span>
+                    <span onclick="setRating(3)">⭐</span>
+                    <span onclick="setRating(4)">⭐</span>
+                    <span onclick="setRating(5)">⭐</span>
+                </div>
+                <textarea rows="3" placeholder="Cuéntanos tu experiencia en Neko Mochi Café... 💕" id="reviewText"></textarea>
+                <button class="submit-rating" onclick="submitReview()">Enviar Reseña 🐾</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contacto -->
+    <section class="section-box" id="contacto">
+        <h2 class="section-title">Visítanos</h2>
+        <div class="contact-grid">
+            <div class="info-card">
+                <h3>📍 Dirección & Horarios</h3>
+                <p>🌸 Calle Sakura 123, Barrio Neko<br>📞 +57 300 123 4567<br>✉️ hola@nekomochicafe.com</p>
+                <ul>
+                    <li>Lunes a Domingo: 8:00 AM — 9:00 PM</li>
+                    <li>Feriados: 9:00 AM — 8:00 PM</li>
+                </ul>
+                <div class="delivery-btns">
+                    <a href="https://wa.me/573001234567?text=¡Hola%20Neko%20Mochi%20Café!%20Quiero%20hacer%20un%20pedido%20🐱" target="_blank" class="btn-wa">💬 Pedir por WhatsApp</a>
+                    <a href="#" target="_blank" class="btn-rappi">🛵 Pedir por Rappi</a>
+                </div>
+                <div class="social-row">
+                    <a href="https://instagram.com" target="_blank" class="ig" title="Instagram">📷</a>
+                    <a href="https://facebook.com" target="_blank" class="fb" title="Facebook">📘</a>
+                    <a href="https://tiktok.com" target="_blank" class="tk" title="TikTok">🎵</a>
+                </div>
+            </div>
+            <div class="info-card">
+                <h3>🗺️ Encuéntranos</h3>
+                <div class="map-container">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3976.5!2d-74.0721!3d4.711!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNMKwNDInMzkuNiJOIDc0wrAwNCcxOS42Ilc!5e0!3m2!1ses!2sco!4v1" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-cats">🐱🐈🐱🐈🐱</div>
+        <p>🐾 Hecho con amor y ronroneos · Neko Mochi Café © 2026 🐾</p>
+    </footer>
+
+    <!-- Carrito Sidebar -->
+    <div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h2>🛒 Tu Pedido</h2>
+            <button class="close-cart" onclick="toggleCart()">✕</button>
+        </div>
+        <div class="cart-items" id="cartItems">
+            <div class="cart-empty"><span class="big-emoji">🐱</span><br>Tu carrito está vacío<br><small>¡Agrega algo delicioso!</small></div>
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total"><span>Total:</span><span id="cartTotal">$0</span></div>
+            <button class="checkout-btn" onclick="checkout()">Finalizar Pedido 🐾</button>
+            <a href="https://wa.me/573001234567?text=¡Hola%20Neko%20Mochi%20Café!%20Quiero%20hacer%20un%20pedido%20🐱" target="_blank" class="whatsapp-btn">💬 Pedir por WhatsApp</a>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast">¡Agregado al carrito! 🐱</div>
+
+    <script>
+        /* ── Carrito de compras ── */
+        let cart = [];
+        const cartItemsEl = document.getElementById('cartItems');
+        const cartCountEl = document.getElementById('cartCount');
+        const cartTotalEl = document.getElementById('cartTotal');
+
+        function addToCart(name, price, emoji) {
+            const existing = cart.find(item => item.name === name);
+            if (existing) {
+                existing.qty++;
+            } else {
+                cart.push({ name, price: parseInt(price), emoji, qty: 1 });
+            }
+            updateCart();
+            showToast(`¡${name} agregado! 🐾`);
+        }
+
+        function removeFromCart(name) {
+            cart = cart.filter(item => item.name !== name);
+            updateCart();
+        }
+
+        function changeQty(name, delta) {
+            const item = cart.find(i => i.name === name);
+            if (!item) return;
+            item.qty += delta;
+            if (item.qty <= 0) removeFromCart(name);
+            else updateCart();
+        }
+
+        function updateCart() {
+            const totalQty = cart.reduce((sum, i) => sum + i.qty, 0);
+            const totalPrice = cart.reduce((sum, i) => sum + i.price * i.qty, 0);
+            cartCountEl.textContent = totalQty;
+            cartTotalEl.textContent = '$' + totalPrice.toLocaleString();
+
+            if (cart.length === 0) {
+                cartItemsEl.innerHTML = '<div class="cart-empty"><span class="big-emoji">🐱</span><br>Tu carrito está vacío<br><small>¡Agrega algo delicioso!</small></div>';
+                return;
+            }
+
+            cartItemsEl.innerHTML = cart.map(item => `
+                <div class="cart-item">
+                    <span class="ci-emoji">${item.emoji}</span>
+                    <div class="ci-info">
+                        <h4>${item.name}</h4>
+                        <span>$${item.price.toLocaleString()} c/u</span>
+                    </div>
+                    <div class="ci-qty">
+                        <button onclick="changeQty('${item.name}', -1)">−</button>
+                        <span>${item.qty}</span>
+                        <button onclick="changeQty('${item.name}', 1)">+</button>
+                    </div>
+                    <button class="remove-item" onclick="removeFromCart('${item.name}')">🗑️</button>
+                </div>
+            `).join('');
+        }
+
+        function toggleCart() {
+            document.getElementById('cartSidebar').classList.toggle('show');
+            document.getElementById('cartOverlay').classList.toggle('show');
+        }
+
+        function checkout() {
+            if (cart.length === 0) { showToast('Tu carrito está vacío 🐱'); return; }
+            const total = cart.reduce((sum, i) => sum + i.price * i.qty, 0);
+            const items = cart.map(i => `${i.qty}x ${i.name}`).join(', ');
+            const msg = `¡Hola Neko Mochi Café! Quiero hacer un pedido 🐱%0A%0A${items}%0A%0ATotal: $${total.toLocaleString()}`;
+            window.open(`https://wa.me/573001234567?text=${msg}`, '_blank');
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.textContent = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2500);
+        }
+
+        /* ── Tabs del menú ── */
+        function showTab(tab) {
+            document.querySelectorAll('.menu-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.menu-panel').forEach(p => p.classList.remove('active'));
+            event.target.classList.add('active');
+            document.getElementById('tab-' + tab).classList.add('active');
+        }
+
+        /* ── Rating ── */
+        let currentRating = 5;
+        const reviews = [{stars:5},{stars:5},{stars:5},{stars:4},{stars:5}];
+
+        function setRating(n) {
+            currentRating = n;
+            const spans = document.querySelectorAll('#starPicker span');
+            spans.forEach((s, i) => s.classList.toggle('active', i < n));
+        }
+        setRating(5);
+
+        function updateRatingDisplay() {
+            const avg = reviews.reduce((a,b)=>a+b.stars,0)/reviews.length;
+            document.getElementById('ratingScore').textContent = avg.toFixed(1);
+            document.getElementById('ratingCount').textContent = `basado en ${reviews.length} reseñas kawaii`;
+            document.getElementById('displayStars').textContent = '⭐'.repeat(Math.round(avg));
+        }
+
+        function submitReview() {
+            const text = document.getElementById('reviewText').value.trim();
+            if (!text) { showToast('Escribe una reseña primero 💕'); return; }
+            reviews.push({stars: currentRating});
+            updateRatingDisplay();
+            document.getElementById('reviewText').value = '';
+            showToast('¡Gracias por tu reseña! 🐱💕');
+        }
+    </script>
+
+</body>
+</html>
